@@ -25,6 +25,10 @@ module.exports = {
                 exclude: /node_modules/,
                 // 在这里添加 react-hot，注意这里使用的是loaders，所以不能用 query，应该把presets参数写在 babel 的后面
                 loaders: ['react-hot', 'babel?presets[]=react,presets[]=es2015']
+            },
+            {
+                test: /\.(png|jpg)$/,
+                loader: "url-loader?limit=8192&name=[hash:8].[name].[ext]"
             }
         ]
     },

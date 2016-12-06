@@ -5,9 +5,6 @@
 import React,{Component} from 'react';
 import {render} from 'react-dom';
 
-import DemoView from './components/DemoView'
+import AppView from './components/AppView'
 
-if(module.hot)
-    module.hot.accept();
-
-render(<DemoView />, document.getElementById('content'));
+render(<AppView />, document.getElementById('content'));
