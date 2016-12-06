@@ -11,15 +11,11 @@ module.exports = {
     ],
     output: {
         path: path.resolve(__dirname, './build'),
-        filename: 'bundle.js',
+        filename: 'static/bundle.js',
         publicPath: "/build"
     },
     module:{
         loaders:[
-            // {
-            //     test: /\.jsx?/,
-            //     loader: 'babel'
-            // },
             {
                 test: /\.jsx?$/,
                 exclude: /node_modules/,
@@ -28,7 +24,7 @@ module.exports = {
             },
             {
                 test: /\.(png|jpg)$/,
-                loader: "url-loader?limit=8192&name=[hash:8].[name].[ext]"
+                loader: "url-loader?limit=8192&name=/imgs/[hash:8].[name].[ext]"
             }
         ]
     },

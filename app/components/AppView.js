@@ -47,12 +47,16 @@ export default class extends Component {
         log(Tag,'componentDidUpdate');
     }
 
+
     render() {
         let srcimg=require('../imgs/hom.jpg');
-        log(Tag,'render 123 '+srcimg);
+
+        log(Tag,'render hahahah '+srcimg);
+
         return (
             <div>
-                <img src={srcimg} />
+                <img src={srcimg} style={{width:200}}/>
+
                 <input type="text" ref='input' value={this.state.inputText} onChange={(event)=>{
 
                     this.setState({
@@ -64,6 +68,4 @@ export default class extends Component {
         );
     };
 }
-
-
 
