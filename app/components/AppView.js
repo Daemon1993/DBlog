@@ -49,9 +49,12 @@ export default class extends Component {
 
 
     render() {
+
+
         let srcimg=require('../imgs/hom.jpg');
 
-        log(Tag,'render hahahah '+srcimg);
+        log(Tag,'render  hahah '+srcimg);
+
 
         return (
             <div>

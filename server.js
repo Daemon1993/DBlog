@@ -11,7 +11,7 @@ var config = require('./webpack.config');
 
 
 new WebpackDevServer(webpack(config), {
-    publicPath: config.output.publicPath,
+    publicPath: config.output.publicPath+'/dst',
     hot: true,
     historyApiFallback: true,
 }).listen(9999, 'localhost', function (err, result) {

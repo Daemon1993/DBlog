@@ -10,8 +10,10 @@ module.exports = {
         path.resolve(__dirname, APP_DIR+'/Main.js')
     ],
     output: {
+            //打包根目录
         path: path.resolve(__dirname, './build'),
-        filename: 'static/bundle.js',
+        filename: 'bundle.js',
+        // 提供的访问目录
         publicPath: "/build"
     },
     module:{
