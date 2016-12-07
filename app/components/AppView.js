@@ -18,52 +18,56 @@ export default class extends Component {
         super(props);
         // 初始状态
         this.state = {
-            inputText:'',
+            inputText: '',
         };
     }
 
     onclick() {
 
         this.setState({
-            inputText:'',
+            inputText: '',
         });
         ReactDom.findDOMNode(this.refs.input).focus();
     };
 
     componentWillReceiveProps() {
-        log(Tag,'componentWillReceiveProps');
+        log(Tag, 'componentWillReceiveProps');
     }
 
     componentDidMount() {
-        log(Tag,'componentDidMount');
+        log(Tag, 'componentDidMount');
     }
 
     shouldComponentUpdate() {
-        log(Tag,'shouldComponentUpdate');
+        log(Tag, 'shouldComponentUpdate');
         return true;
     }
 
     componentDidUpdate() {
-        log(Tag,'componentDidUpdate');
+        log(Tag, 'componentDidUpdate');
     }
 
 
     render() {
 
 
-        let srcimg=require('../imgs/hom.jpg');
+        let srcimg = require('../imgs/hom.jpg');
 
-        log(Tag,'render  hahah '+srcimg);
+        log(Tag, 'render  hahah ' + srcimg);
 
 
         return (
-            <div>
-                <img src={srcimg} style={{width:200}}/>
+            <div style={styles.mainStyles}>
+                <img src={srcimg} style={styles.iconStyles}/>
+                <img src={srcimg} style={styles.iconStyles}/>
+                <img src={srcimg} style={styles.iconStyles}/>
+                <img src={srcimg} style={styles.iconStyles}/>
 
-                <input type="text" ref='input' value={this.state.inputText} onChange={(event)=>{
+
+                <input type="text" ref='input' value={this.state.inputText} onChange={(event)=> {
 
                     this.setState({
-                        inputText:event.target.value,
+                        inputText: event.target.value,
                     });
                 }}/>
                 <input type="button" value='clear' onClick={()=>this.onclick()}/>
@@ -72,3 +76,21 @@ export default class extends Component {
     };
 }
 
+const styles = {
+    mainStyles: {
+        backgroundColor: 'red',
+        padding:10,
+        flexDirection:'column',
+        borderRadius:10,
+        display: 'inline-flex',
+        alignItems:'center'
+},
+    iconStyles:{
+        width:100,
+        height:100,
+        borderRadius:50,
+        margin:10,
+    }
+
+
+};

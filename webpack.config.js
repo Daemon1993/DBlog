@@ -14,7 +14,7 @@ module.exports = {
         path: path.resolve(__dirname, './build'),
         filename: 'bundle.js',
         // 提供的访问目录
-        publicPath: "/build"
+        publicPath: "/build/"
     },
     module:{
         loaders:[
