@@ -4,6 +4,8 @@
 
 import React, {Component} from 'react';
 import ReactDom from 'react-dom';
+import UserInfoView from './UserInfoView'
+import DirectoryContentView from './DirectoryContentView'
 
 import {log} from '../DConsole'
 
@@ -17,58 +19,48 @@ export default class extends Component {
     constructor(props) {
         super(props);
         // 初始状态
-        this.state = {
-            inputText:'',
-        };
+        this.state = {};
     }
 
     onclick() {
 
         this.setState({
-            inputText:'',
+            inputText: '',
         });
         ReactDom.findDOMNode(this.refs.input).focus();
     };
 
     componentWillReceiveProps() {
-        log(Tag,'componentWillReceiveProps');
+        log(Tag, 'componentWillReceiveProps');
     }
 
     componentDidMount() {
-        log(Tag,'componentDidMount');
+        log(Tag, 'componentDidMount');
     }
 
     shouldComponentUpdate() {
-        log(Tag,'shouldComponentUpdate');
+        log(Tag, 'shouldComponentUpdate  ');
         return true;
     }
 
     componentDidUpdate() {
-        log(Tag,'componentDidUpdate');
+        log(Tag, 'componentDidUpdate ');
+
     }
 
-
     render() {
-
-
-        let srcimg=require('../imgs/hom.jpg');
-
-        log(Tag,'render  hahah '+srcimg);
-
-
         return (
-            <div>
-                <img src={srcimg} style={{width:200}}/>
-
-                <input type="text" ref='input' value={this.state.inputText} onChange={(event)=>{
-
-                    this.setState({
-                        inputText:event.target.value,
-                    });
-                }}/>
-                <input type="button" value='clear' onClick={()=>this.onclick()}/>
+            <div style={styles.mainDiv}>
+                <UserInfoView/>
+                <DirectoryContentView/>
             </div>
         );
     };
 }
-
+const styles = {
+    mainDiv: {
+        borderRadius: 20,
+        padding: 20,
+        display: 'flex',
+    },
+};
