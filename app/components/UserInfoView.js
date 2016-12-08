@@ -42,6 +42,8 @@ const styles = {
         display: 'inline-flex',
         borderRadius: 20,
         padding: 20,
+        flex:2,
+        alignItems:'center'
     },
     mainDivIcon: {
         height: 100,

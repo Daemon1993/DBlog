@@ -23,6 +23,10 @@ class DirectoryContentView extends BaseComponent {
     };
 
     componentWillReceiveProps(nextProps) {
+        if(this.props.data==nextProps.data){
+            return;
+        }
+
         super.log(Tag, 'componentWillReceiveProps ');
 
     }
@@ -62,7 +66,7 @@ const styles = {
         flexWrap: 'wrap',
         alignItems: 'center',
         justifyContent: 'center',
-        flex: 1,
+        flex: 8,
         flexDirection: 'column'
     },
     titleP:{
