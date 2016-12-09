@@ -22,6 +22,10 @@ class DirectoryContentView extends BaseComponent {
     };
 
     componentWillReceiveProps(nextProps) {
+        if(this.props.data==nextProps.data){
+            return;
+        }
+
         super.log(Tag, 'componentWillReceiveProps ');
 
     }
