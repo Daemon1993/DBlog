@@ -5,7 +5,7 @@
 import React, {Component} from 'react';
 import ReactDom from 'react-dom';
 import UserInfoView from './UserInfoView'
-import DirectoryContentView from './DirectoryContentView'
+import {DirectoryContentView}from './DirectoryContentView'
 
 import {log} from '../DConsole'
 
