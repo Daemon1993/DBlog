@@ -26,7 +26,15 @@ module.exports = {
             {
                 test: /\.(png|jpg)$/,
                 loader: "url-loader?limit=8192&name=/imgs/[hash:8].[name].[ext]"
-            }
+            },
+            {
+                test: /\.json$/,
+                loader: "json-loader"
+            },
+            {
+                test: /\.css$/,
+                loader: "style-loader!css-loader"
+            },
         ]
     },
     // 添加插件

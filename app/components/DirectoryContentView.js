@@ -13,7 +13,6 @@ if (module.hot)
 
 const Tag = 'DirectoryContentView';
 
-
 class DirectoryContentView extends BaseComponent {
 
     static propTypes = {
@@ -32,6 +31,11 @@ class DirectoryContentView extends BaseComponent {
         this.props.loadData();
     }
 
+    go2Detail(data){
+        super.log(Tag,data['id']);
+    }
+
+
     render() {
         super.log(Tag, 'render');
 
@@ -39,15 +43,21 @@ class DirectoryContentView extends BaseComponent {
         let index = 0;
 
         for (let data of this.props.data) {
+            if(data['topic_intro']==null || data['topic_intro']==''){
+                continue;
+            }
             titles.push(
-                <p key={index} style={styles.titleP}>{data['title']}</p>
+                // {/*<p key={index} style={styles.titleP}>{data['topic_intro']}</p>*/}
+                <div key={index} style={styles.titleM}>
+                    <p style={styles.titleP} onClick={()=>this.go2Detail(data)}>{data['title']}</p>
+                </div>
+
             );
             index++;
         }
         return (
             <div style={styles.mainDivContent}>
                 {titles}
-
             </div>
         );
     }
@@ -59,14 +69,29 @@ const styles = {
         display: 'flex',
         margin: 10,
         borderRadius: 10,
-        flexWrap: 'wrap',
         alignItems: 'center',
         justifyContent: 'center',
+        flexDirection: 'column',
         flex: 1,
-        flexDirection: 'column'
     },
-    titleP:{
-        textOverflow:'ellipsis',
+
+    titleP: {
+        width: 800,
+        flexWrap: 'nowrap',
+        overflow: 'hidden',
+        whiteSpace: 'nowrap',
+        textOverflow: 'ellipsis',
+        fontFamily:'微软雅黑',
+        fontSize:'1.5em',
+        cursor:'pointer'
+
+    },
+
+    titleM: {
+        backgroundColor: '#ffffff',
+        margin:10,
+        borderRadius:10,
+        padding:10,
     }
 };
 

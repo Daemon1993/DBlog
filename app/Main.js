@@ -6,6 +6,7 @@ import React, {Component} from 'react';
 import {render} from 'react-dom';
 
 import AppView from './components/AppView'
+import PublishArticle from './components/PublishArticle'
 import {Provider} from 'react-redux'
 import configureStore from './store/config-store'
 
@@ -15,9 +16,10 @@ if (module.hot)
     module.hot.accept();
 
 
+console.log("Main");
+
 render(
     <Provider store={store}>
-        <AppView />
-
+        <PublishArticle />
     </Provider>,
     document.getElementById('content'));
