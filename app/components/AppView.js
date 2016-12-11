@@ -5,7 +5,7 @@
 import React, {Component} from 'react';
 import ReactDom from 'react-dom';
 import UserInfoView from './UserInfoView'
-import {DirectoryContentView}from './DirectoryContentView'
+import DirectoryContentView from './DirectoryContentView'
 
 import {log} from '../DConsole'
 
@@ -14,7 +14,7 @@ if (module.hot)
 
 const Tag = 'AppView';
 
-export default class extends Component {
+export default class AppView extends Component {
     // 构造
     constructor(props) {
         super(props);
@@ -52,7 +52,7 @@ export default class extends Component {
         return (
             <div style={styles.mainDiv}>
                 <UserInfoView/>
-                <DirectoryContentView/>
+                <DirectoryContentView />
             </div>
         );
     };

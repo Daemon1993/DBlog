@@ -76,7 +76,7 @@ const styles = {
         alignItems: 'center',
         justifyContent: 'center',
         flexDirection: 'column',
-        flex: 1,
+        flex: 8,
     },
 
     titleP: {

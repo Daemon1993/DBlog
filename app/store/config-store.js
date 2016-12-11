@@ -12,6 +12,4 @@ const createStoreWithMiddleware = applyMiddleware(thunkMiddleware)(createStore);
 
 export default function configureStore() {
     return createStoreWithMiddleware(rootReducer);
-
-
 }
