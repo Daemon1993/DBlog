@@ -29,6 +29,7 @@ if(index!=null) {
         document.getElementById('index'));
 }
 
+
 if(publish!=null){
 render(<PublishArticle />,
     document.getElementById('publish'));

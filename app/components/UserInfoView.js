@@ -40,16 +40,16 @@ const styles = {
         backgroundColor: '#852741',
         flexDirection: 'column',
         display: 'inline-flex',
-        borderRadius: 20,
-        padding: 20,
-        flex:2,
-        alignItems:'center'
+        flex:2.5,
+        alignItems:'center',
+        padding:20,
     },
     mainDivIcon: {
         height: 100,
         borderRadius: 50,
         margin: 10,
         width: 100,
+        marginTop:'50%'
     },
 };
 
