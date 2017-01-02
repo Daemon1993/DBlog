@@ -114,28 +114,34 @@ export default class PublishArticle extends BaseComponent {
                 if (blob.size === 0) {
                     return;
                 }
-                this.uploadImage2QiniuServer(blob, 'paste' + ( new Date()).valueOf() + ".jpg");
+                this.uploadImage2QiniuServer(blob, 'paste' + ( new Date()).Format('yyyy-MM-dd hh:mm:ss')+ ".jpg");
 
-                // // blob 就是从剪切板获得的文件 可以进行上传或其他操作
-                // let reader = new FileReader();
-                //
-                //
-                // // 读取文件后将其显示在网页中
-                // reader.onload = (e)=>this.cbdCallBackOk(e);
-                //
-                // // 读取文件
-                // reader.readAsDataURL(blob);
                 break;
             }
         }
     }
 
     /**
-     * 上传到七牛服务器
+     * 上传到服务器
      * @param image
      * @param fileName
      */
     uploadImage2QiniuServer(image, fileName) {
+        console.log('uploadImage2QiniuServer '+fileName);
+        let formData = new FormData();
+
+        formData.append('file',image);
+        formData.append('filename',fileName);
+
+
+        fetch('http://localhost:5000/upload', {
+            method: 'POST',
+            body: formData,
+        }).then(res => res.text()).then(result=>{
+            console.log(result)
+        }).catch((error)=> {
+            console.log(JSON.stringify(error))
+        });
     }
 
 
@@ -161,25 +167,6 @@ export default class PublishArticle extends BaseComponent {
                     <input type="text" placeholder="输入文章标题" style={styles.titleStyle}
                            onChange={(event)=>this.titleChange(event)}/>
 
-                    <svg width="200" height="200" style={{backgroundColor: '#123456'}}>
-                        <defs>
-                            <linearGradient id="linear" x1="0%" y1="0%" x2="100%" y2="0%" >
-                                <stop offset="0%" stopColor="#05a"/>
-                                <stop offset="100%" stopColor="#0a5"/>
-                            </linearGradient>
-                        </defs>
-
-                        <path d="M25,0
- A25,25 0 1,1 0,23" style={{"stroke": "url(#linear)", "fill": "none",strokeWidth:"10"}}/>
-                    </svg>
-                    <svg width="200" height="200" style={{backgroundColor: '#123456'}}>
-                        <path d="M50,50
-                     A50,50 0 0,1 35,20
-                     L100,100
-                     M110,110
-                     L100,0" style={{"stroke": "#ea8513", "fill": "none"}}/>
-                    </svg>
-
                     <button style={styles.btSend}>push-->服务器</button>
                     <textarea ref="textArea" style={styles.textareaText} onChange={(event)=>this.textChange(event)}
                               onScroll={(event)=>this.leftTRScorll(event)}
@@ -204,6 +191,7 @@ const styles = {
         padding: 20,
         fontSize: 16,
         flex: 1,
+
     },
     leftMdDiv: {
         flex: 1,
@@ -225,7 +213,26 @@ const styles = {
         padding: 10,
         alignSelf: 'flex-end',
         margin: '10px 0',
+
     }
 
-
 };
+
+Date.prototype.Format = function(fmt)
+{ //author: meizz
+    var o = {
+        "M+" : this.getMonth()+1,                 //月份
+        "d+" : this.getDate(),                    //日
+        "h+" : this.getHours(),                   //小时
+        "m+" : this.getMinutes(),                 //分
+        "s+" : this.getSeconds(),                 //秒
+        "q+" : Math.floor((this.getMonth()+3)/3), //季度
+        "S"  : this.getMilliseconds()             //毫秒
+    };
+    if(/(y+)/.test(fmt))
+        fmt=fmt.replace(RegExp.$1, (this.getFullYear()+"").substr(4 - RegExp.$1.length));
+    for(var k in o)
+        if(new RegExp("("+ k +")").test(fmt))
+            fmt = fmt.replace(RegExp.$1, (RegExp.$1.length==1) ? (o[k]) : (("00"+ o[k]).substr((""+ o[k]).length)));
+    return fmt;
+}
