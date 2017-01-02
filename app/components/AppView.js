@@ -45,7 +45,6 @@ export default class AppView extends Component {
 
     componentDidUpdate() {
         log(Tag, 'componentDidUpdate ');
-
     }
 
     render() {
@@ -57,10 +56,10 @@ export default class AppView extends Component {
         );
     };
 }
+
 const styles = {
     mainDiv: {
-        borderRadius: 20,
-        padding: 20,
+        height: '100%',
         display: 'flex',
     },
 };

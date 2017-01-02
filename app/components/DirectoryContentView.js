@@ -50,6 +50,7 @@ class DirectoryContentView extends BaseComponent {
             if(data['topic_intro']==null || data['topic_intro']==''){
                 continue;
             }
+
             titles.push(
                 // {/*<p key={index} style={styles.titleP}>{data['topic_intro']}</p>*/}
                 <div key={index} style={styles.titleM}>
@@ -67,28 +68,28 @@ class DirectoryContentView extends BaseComponent {
     }
 }
 
+
 const styles = {
     mainDivContent: {
-        backgroundColor: '#147852',
+
+        backgroundColor: '#475123',
         display: 'flex',
         margin: 10,
-        borderRadius: 10,
-        alignItems: 'center',
-        justifyContent: 'center',
         flexDirection: 'column',
         flex: 8,
+        overflow: 'scroll',
     },
 
     titleP: {
-        width: 800,
         flexWrap: 'nowrap',
         overflow: 'hidden',
         whiteSpace: 'nowrap',
         textOverflow: 'ellipsis',
         fontFamily:'微软雅黑',
         fontSize:'1.5em',
-        cursor:'pointer'
-
+        cursor:'pointer',
+        flex:1,
+        textAlign:'center'
     },
 
     titleM: {
