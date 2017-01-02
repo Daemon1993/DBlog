@@ -166,22 +166,6 @@ export default class PublishArticle extends BaseComponent {
                     <input type="text" placeholder="输入文章标题" style={styles.titleStyle}
                            onChange={(event)=>this.titleChange(event)}/>
 
-                    <svg width="400" height="100" style={{backgroundColor: '#123456', padding: 50}}>
-                        <defs>
-                            <linearGradient id="linear" x1="0%" y1="0%" x2="100%" y2="0%">
-                                <stop offset="0%" stopColor="#05a"/>
-                                <stop offset="100%" stopColor="#0a5"/>
-                            </linearGradient>
-                        </defs>
-
-                        <path d="M25,0
- A25,25 0 0,1 25,50" style={{"stroke": "url(#linear)", "fill": "none", strokeWidth: "5"}}/>
-
-                        <path d="M25,50
- A25,25 0 0,1 25,0" style={{"stroke": "url(#linear)", "fill": "none", strokeWidth: "5"}}/>
-
-                    </svg>
-
 
                     <button style={styles.btSend}>push-->服务器</button>
                     <textarea ref="textArea" style={styles.textareaText} onChange={(event)=>this.textChange(event)}
