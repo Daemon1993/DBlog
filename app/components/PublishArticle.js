@@ -15,7 +15,7 @@ marked.setOptions({
     renderer: new marked.Renderer(),
     gfm: true,
     tables: true,
-    breaks: false,
+    breaks: true,
     pedantic: false,
     sanitize: false,
     smartLists: true,
@@ -40,6 +40,7 @@ marked.setOptions({
 
 
 const Tag = "PublishArticle";
+let bucketHost = 'http://oi0thuu5p.bkt.clouddn.com';
 
 export default class PublishArticle extends BaseComponent {
     // 构造
@@ -52,9 +53,12 @@ export default class PublishArticle extends BaseComponent {
         };
         let title = document.getElementsByTagName('title')[0];
         title.text = 'DBlog 编辑器';
+
+
     }
 
     textChange(event) {
+        console.log('textChange ')
         this.setState({
             resultText: event.target.value,
         });
@@ -114,28 +118,75 @@ export default class PublishArticle extends BaseComponent {
                 if (blob.size === 0) {
                     return;
                 }
-                this.uploadImage2QiniuServer(blob, 'paste' + ( new Date()).valueOf() + ".jpg");
+                console.log(blob);
 
-                // // blob 就是从剪切板获得的文件 可以进行上传或其他操作
-                // let reader = new FileReader();
-                //
-                //
-                // // 读取文件后将其显示在网页中
-                // reader.onload = (e)=>this.cbdCallBackOk(e);
-                //
-                // // 读取文件
-                // reader.readAsDataURL(blob);
+                this.uploadImage2QiniuServer(blob,
+                    'paste' + ( new Date()).Format('yyyy-MM-dd hh:mm:ss') + ".jpg");
+
                 break;
             }
         }
     }
 
+    drop(e) {
+        // 操作系统拖放文件到浏览器需要取消默认行为
+        e.preventDefault();
+
+        for (let file of e.dataTransfer.files) {
+
+            if (file && file.type.match('image.*')) {
+                if (file.type == 'image/gif') {
+                    this.uploadImage2QiniuServer(file,
+                        'paste' + ( new Date()).Format('yyyy-MM-dd hh:mm:ss') + ".gif");
+                } else {
+                    this.uploadImage2QiniuServer(file,
+                        'paste' + ( new Date()).Format('yyyy-MM-dd hh:mm:ss') + ".jpg");
+
+                }
+            }
+        }
+    }
+
     /**
-     * 上传到七牛服务器
+     * 上传到服务器
      * @param image
      * @param fileName
      */
     uploadImage2QiniuServer(image, fileName) {
+
+        console.log('uploadImage2QiniuServer ' + fileName);
+        let formData = new FormData();
+
+        formData.append('file', image);
+        formData.append('filename', fileName);
+
+
+        fetch('http://localhost:5000/upload', {
+            method: 'POST',
+            body: formData,
+        }).then(res => res.text()).then(result=> {
+            console.log(result)
+            if (result == 'error') {
+                console.log(result);
+                return
+            }
+            console.log('reponse ok ');
+            let img = '![](' + bucketHost + '/' + result + ')';
+
+            console.dir(this.refs['textArea']);
+
+            insertText(this.refs['textArea'], img)
+            // this.refs['textArea'].value=this.refs['textArea'].value+img;
+            //
+            this.setState({
+                resultText: this.refs['textArea'].value,
+            });
+        }).catch((error)=> {
+            console.log(JSON.stringify(error))
+
+        });
+
+
     }
 
 
@@ -160,27 +211,14 @@ export default class PublishArticle extends BaseComponent {
                     <input type="text" placeholder="输入文章标题" style={styles.titleStyle}
                            onChange={(event)=>this.titleChange(event)}/>
 
-                    <svg width="400" height="100" style={{backgroundColor: '#123456', padding: 50}}>
-                        <defs>
-                            <linearGradient id="linear" x1="0%" y1="0%" x2="100%" y2="0%">
-                                <stop offset="0%" stopColor="#05a"/>
-                                <stop offset="100%" stopColor="#0a5"/>
-                            </linearGradient>
-                        </defs>
-
-                        <path d="M25,0
- A25,25 0 0,1 25,50" style={{"stroke": "url(#linear)", "fill": "none", strokeWidth: "5"}}/>
-
-                        <path d="M25,50
- A25,25 0 0,1 25,0" style={{"stroke": "url(#linear)", "fill": "none", strokeWidth: "5"}}/>
-
-                    </svg>
-
 
                     <button style={styles.btSend}>push-->服务器</button>
                     <textarea ref="textArea" style={styles.textareaText} onChange={(event)=>this.textChange(event)}
                               onScroll={(event)=>this.leftTRScorll(event)}
-                              onPaste={(event)=>this.textAreaPasteEvent(event)}></textarea>
+                              onPaste={(event)=>this.textAreaPasteEvent(event)}
+                              onDrop={(event)=>this.drop(event)}
+                              onDragOver={(event)=>event.preventDefault()}
+                    ></textarea>
                 </div>
                 <div ref="mdshowdiv" style={styles.rightMdDiv} dangerouslySetInnerHTML={{__html: title + result}}>
                 </div>
@@ -201,6 +239,7 @@ const styles = {
         padding: 20,
         fontSize: 16,
         flex: 1,
+
     },
     leftMdDiv: {
         flex: 1,
@@ -222,7 +261,42 @@ const styles = {
         padding: 10,
         alignSelf: 'flex-end',
         margin: '10px 0',
+
     }
 
-
 };
+
+Date.prototype.Format = function (fmt) { //author: meizz
+    var o = {
+        "M+": this.getMonth() + 1,                 //月份
+        "d+": this.getDate(),                    //日
+        "h+": this.getHours(),                   //小时
+        "m+": this.getMinutes(),                 //分
+        "s+": this.getSeconds(),                 //秒
+        "q+": Math.floor((this.getMonth() + 3) / 3), //季度
+        "S": this.getMilliseconds()             //毫秒
+    };
+    if (/(y+)/.test(fmt))
+        fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+    for (var k in o)
+        if (new RegExp("(" + k + ")").test(fmt))
+            fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+    return fmt;
+}
+
+function insertText(obj, str) {
+    if (document.selection) {
+        var sel = document.selection.createRange();
+        sel.text = str;
+    } else if (typeof obj.selectionStart === 'number' && typeof obj.selectionEnd === 'number') {
+        var startPos = obj.selectionStart,
+            endPos = obj.selectionEnd,
+            cursorPos = startPos,
+            tmpStr = obj.value;
+        obj.value = tmpStr.substring(0, startPos) + str + tmpStr.substring(endPos, tmpStr.length);
+        cursorPos += str.length;
+        obj.selectionStart = obj.selectionEnd = cursorPos;
+    } else {
+        obj.value += str;
+    }
+}
