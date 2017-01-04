@@ -5,7 +5,7 @@
 import React, {Component} from 'react';
 import ReactDom from 'react-dom';
 import UserInfoView from './UserInfoView'
-import DirectoryContentView from './DirectoryContentView'
+import DirectoryContentView from './ArticleContentView'
 
 import {log} from '../DConsole'
 
@@ -46,6 +46,7 @@ export default class AppView extends Component {
     componentDidUpdate() {
         log(Tag, 'componentDidUpdate ');
     }
+
 
     render() {
         return (

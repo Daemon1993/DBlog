@@ -28,7 +28,6 @@
   "dependencies": {
     "fetch": "^1.1.0",
     "marked": "^0.3.6",
-    "qiniu-js": "^1.0.14-beta",
     "react": "^15.4.1",
     "react-dom": "^15.4.1",
     "react-redux": "^4.4.6",
