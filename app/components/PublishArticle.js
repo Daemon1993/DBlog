@@ -113,12 +113,13 @@ export default class PublishArticle extends BaseComponent {
 
         for (var i = 0; i < cbd.items.length; i++) {
             var item = cbd.items[i];
+
             if (item.kind == "file") {
                 var blob = item.getAsFile();
-                if (blob.size === 0) {
+
+                if (blob==null || blob.size === 0 || blob.type!='image/png') {
                     return;
                 }
-                console.log(blob);
 
                 this.uploadImage2QiniuServer(blob,
                     'paste' + ( new Date()).Format('yyyy-MM-dd hh:mm:ss') + ".jpg");
@@ -186,16 +187,51 @@ export default class PublishArticle extends BaseComponent {
 
         });
 
-
     }
 
+    pushData2Server(){
 
-    cbdCallBackOk(e) {
-        let mdImage = '![](' + e.target.result + ')';
-        this.setState({
-            resultText: this.state.resultText + mdImage,
+        console.log(document.cookie);
+
+        if(this.state.titleText==''){
+            alert('请输入标题')
+            return
+        }
+        if(this.state.resultText==''){
+            alert('请输入内容')
+            return
+        }
+
+        let formData = new FormData();
+
+        formData.append('title', this.state.titleText);
+        formData.append('content', this.state.resultText);
+
+        fetch('http://localhost:5000/publish', {
+            method: 'POST',
+            body: formData,
+            credentials:'include'
+        }).then(response=>response.text()).then(result=>{
+            this._log(result)
+        }).catch(error=>{
+
         });
-        //saveFile2Dir(e.target.result,'paste'+'.jpg');
+    }
+
+    login(){
+        let formData = new FormData();
+
+        formData.append('username', 'daemon123');
+
+        fetch('http://localhost:5000/login', {
+            method: 'POST',
+            body: formData,
+            credentials:'include'
+        }).then(response=>response.text()).then(result=>{
+            this._log(result)
+        }).catch(error=>{
+
+        });
     }
 
     render() {
@@ -212,7 +248,7 @@ export default class PublishArticle extends BaseComponent {
                            onChange={(event)=>this.titleChange(event)}/>
 
 
-                    <button style={styles.btSend}>push-->服务器</button>
+                    <button style={styles.btSend} onClick={()=>this.login()}>push-->服务器</button>
                     <textarea ref="textArea" style={styles.textareaText} onChange={(event)=>this.textChange(event)}
                               onScroll={(event)=>this.leftTRScorll(event)}
                               onPaste={(event)=>this.textAreaPasteEvent(event)}
@@ -225,6 +261,10 @@ export default class PublishArticle extends BaseComponent {
             </div>
 
         );
+    }
+
+    _log(msg){
+        console.log('PublishArticle '+msg);
     }
 }
 

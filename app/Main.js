@@ -4,7 +4,7 @@
 
 import React, {Component} from 'react';
 import {render} from 'react-dom';
-
+import {Router,browserHistory,Route} from 'react-router'
 import AppView from './components/AppView'
 import PublishArticle from './components/PublishArticle'
 
@@ -24,7 +24,9 @@ let publish=document.getElementById('publish');
 
 if(index!=null) {
     render(<Provider store={store}>
-            <AppView />
+           <Router history={browserHistory}>
+               <Route path="/aaa" component={AppView}/>
+           </Router>
         </Provider>,
         document.getElementById('index'));
 }
