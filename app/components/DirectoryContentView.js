@@ -71,13 +71,13 @@ class DirectoryContentView extends BaseComponent {
 
 const styles = {
     mainDivContent: {
-
-        backgroundColor: '#475123',
+        backgroundColor: '#e8e8e8',
         display: 'flex',
         margin: 10,
         flexDirection: 'column',
         flex: 8,
         overflow: 'scroll',
+        borderRadius:10,
     },
 
     titleP: {

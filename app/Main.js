@@ -4,6 +4,7 @@
 
 import React, {Component} from 'react';
 import {render} from 'react-dom';
+import {Router, Route, Link, browserHistory} from 'react-router'
 
 import AppView from './components/AppView'
 import PublishArticle from './components/PublishArticle'
@@ -19,18 +20,26 @@ if (module.hot)
 console.log("Main");
 
 
-let index=document.getElementById('index');
-let publish=document.getElementById('publish');
+// class AppMain extends Component{
+//
+//
+//
+//     render(){
+//         return(
+//             <div>
+//                 <button onClick={()=>}>index</button>
+//                 <button>publish</button>
+//             </div>
+//         );
+//     }
+// }
 
-if(index!=null) {
-    render(<Provider store={store}>
-            <AppView />
-        </Provider>,
-        document.getElementById('index'));
-}
+let index = document.getElementById('index');
 
-
-if(publish!=null){
-render(<PublishArticle />,
-    document.getElementById('publish'));
-}
+render(<Provider store={store}>
+        <Router history={browserHistory}>
+            <Route path="/" component={AppView}/>
+            <Route path="/publish" component={PublishArticle}/>
+        </Router>
+    </Provider>,
+    document.getElementById('index'));

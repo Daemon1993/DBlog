@@ -47,6 +47,7 @@ export default class AppView extends Component {
         log(Tag, 'componentDidUpdate ');
     }
 
+
     render() {
         return (
             <div style={styles.mainDiv}>
@@ -61,5 +62,6 @@ const styles = {
     mainDiv: {
         height: '100%',
         display: 'flex',
+
     },
 };

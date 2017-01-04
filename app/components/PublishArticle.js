@@ -5,7 +5,8 @@
 import BaseComponent from './BaseComponent';
 import React from 'react';
 import {saveFile2Dir} from '../utils/FileUtils'
-
+import '../../build/css/markdown10.css'
+import '../../build/css/highlight/styles/default.css'
 
 var hljs = require('highlight.js'); // https://highlightjs.org/
 var marked = require('marked');
@@ -164,7 +165,7 @@ export default class PublishArticle extends BaseComponent {
         fetch('http://localhost:5000/upload', {
             method: 'POST',
             body: formData,
-        }).then(res => res.text()).then(result=> {
+        }).then(res => res.text()).then(result => {
             console.log(result)
             if (result == 'error') {
                 console.log(result);
@@ -181,12 +182,25 @@ export default class PublishArticle extends BaseComponent {
             this.setState({
                 resultText: this.refs['textArea'].value,
             });
-        }).catch((error)=> {
+        }).catch((error) => {
             console.log(JSON.stringify(error))
 
         });
+    }
 
-
+    login() {
+        let formData = new FormData();
+        formData.append('username', 'daemon');
+        fetch('http://127.0.0.1:5000/login', {
+            method: 'POST',
+            body: formData,
+            // mode: "cors",
+            credentials: 'include'
+        }).then(res => res.text()).then(result => {
+            console.log(result)
+        }).catch((error) => {
+            console.log(JSON.stringify(error))
+        });
     }
 
 
@@ -209,15 +223,16 @@ export default class PublishArticle extends BaseComponent {
             <div style={styles.divMain}>
                 <div style={styles.leftMdDiv}>
                     <input type="text" placeholder="输入文章标题" style={styles.titleStyle}
-                           onChange={(event)=>this.titleChange(event)}/>
+                           onChange={(event) => this.titleChange(event)}/>
 
 
-                    <button style={styles.btSend}>push-->服务器</button>
-                    <textarea ref="textArea" style={styles.textareaText} onChange={(event)=>this.textChange(event)}
-                              onScroll={(event)=>this.leftTRScorll(event)}
-                              onPaste={(event)=>this.textAreaPasteEvent(event)}
-                              onDrop={(event)=>this.drop(event)}
-                              onDragOver={(event)=>event.preventDefault()}
+                    <button style={styles.btSend} onClick={() => this.login()}> push-- > 服务器
+                    </button >
+                    < textarea ref="textArea" style={styles.textareaText} onChange={(event) => this.textChange(event)}
+                               onScroll={(event) => this.leftTRScorll(event)}
+                               onPaste={(event) => this.textAreaPasteEvent(event)}
+                               onDrop={(event) => this.drop(event)}
+                               onDragOver={(event) => event.preventDefault()}
                     ></textarea>
                 </div>
                 <div ref="mdshowdiv" style={styles.rightMdDiv} dangerouslySetInnerHTML={{__html: title + result}}>

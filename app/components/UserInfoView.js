@@ -37,12 +37,15 @@ export default class UserInfoView extends BaseComponent {
 
 const styles = {
     mainDivLeft: {
-        backgroundColor: '#852741',
+        backgroundColor: '#e8e8e8',
         flexDirection: 'column',
         display: 'inline-flex',
-        flex:2.5,
+        flex:2,
         alignItems:'center',
         padding:20,
+        borderRadius:10,
+        margin:10,
+
     },
     mainDivIcon: {
         height: 100,
