@@ -4,9 +4,10 @@
 
 import BaseComponent from './BaseComponent';
 import React from 'react';
+
 import {saveFile2Dir} from '../utils/FileUtils'
-import '../../build/css/markdown10.css'
-import '../../build/css/highlight/styles/default.css'
+import '../css/markdown10.css'
+import '../css/highlight/styles/default.css'
 
 var hljs = require('highlight.js'); // https://highlightjs.org/
 var marked = require('marked');
@@ -54,8 +55,10 @@ export default class PublishArticle extends BaseComponent {
         };
         let title = document.getElementsByTagName('title')[0];
         title.text = 'DBlog 编辑器';
+    }
 
-
+    componentWillUnmount() {
+        super.log(Tag,'componentWillUnMount')
     }
 
     textChange(event) {
@@ -165,16 +168,17 @@ export default class PublishArticle extends BaseComponent {
         fetch('http://localhost:5000/upload', {
             method: 'POST',
             body: formData,
-        }).then(res => res.text()).then(result => {
+            credentials: 'include'
+        }).then(res => res.json()).then(result => {
             console.log(result)
-            if (result == 'error') {
-                console.log(result);
-                return
-            }
-            console.log('reponse ok ');
-            let img = '![](' + bucketHost + '/' + result + ')';
 
-            console.dir(this.refs['textArea']);
+
+            let img='';
+            if(result['code']!=0){
+                 img = '!['+result['msg']+ ']';
+            }else {
+                img = '![](' + bucketHost + '/' + result['msg'] + ')';
+            }
 
             insertText(this.refs['textArea'], img)
             // this.refs['textArea'].value=this.refs['textArea'].value+img;
@@ -183,7 +187,32 @@ export default class PublishArticle extends BaseComponent {
                 resultText: this.refs['textArea'].value,
             });
         }).catch((error) => {
-            console.log(JSON.stringify(error))
+            console.log(error)
+            let img = '!['+error+ ']';
+            insertText(this.refs['textArea'], img)
+            // this.refs['textArea'].value=this.refs['textArea'].value+img;
+            //
+            this.setState({
+                resultText: this.refs['textArea'].value,
+            });
+        });
+    }
+
+
+    publish() {
+
+        let formData = new FormData();
+
+        formData.append('title', this.state.titleText);
+        formData.append('content', this.state.resultText);
+
+        fetch('http://localhost:5000/publish', {
+            method: 'POST',
+            body: formData,
+            credentials: 'include'
+        }).then(response=>response.text()).then(result=> {
+            this._log(result)
+        }).catch(error=> {
 
         });
     }
@@ -191,7 +220,7 @@ export default class PublishArticle extends BaseComponent {
     login() {
         let formData = new FormData();
         formData.append('username', 'daemon');
-        fetch('http://127.0.0.1:5000/login', {
+        fetch('http://localhost:5000/login', {
             method: 'POST',
             body: formData,
             // mode: "cors",
@@ -203,37 +232,6 @@ export default class PublishArticle extends BaseComponent {
         });
     }
 
-        let formData = new FormData();
-
-        formData.append('title', this.state.titleText);
-        formData.append('content', this.state.resultText);
-
-        fetch('http://localhost:5000/publish', {
-            method: 'POST',
-            body: formData,
-            credentials:'include'
-        }).then(response=>response.text()).then(result=>{
-            this._log(result)
-        }).catch(error=>{
-
-        });
-    }
-
-    login(){
-        let formData = new FormData();
-
-        formData.append('username', 'daemon123');
-
-        fetch('http://localhost:5000/login', {
-            method: 'POST',
-            body: formData,
-            credentials:'include'
-        }).then(response=>response.text()).then(result=>{
-            this._log(result)
-        }).catch(error=>{
-
-        });
-    }
 
     render() {
 
@@ -249,7 +247,7 @@ export default class PublishArticle extends BaseComponent {
                            onChange={(event) => this.titleChange(event)}/>
 
 
-                    <button style={styles.btSend} onClick={() => this.login()}> push-- > 服务器
+                    <button style={styles.btSend} onClick={() => this.publish()}> push-- > 服务器
                     </button >
                     < textarea ref="textArea" style={styles.textareaText} onChange={(event) => this.textChange(event)}
                                onScroll={(event) => this.leftTRScorll(event)}
@@ -265,8 +263,8 @@ export default class PublishArticle extends BaseComponent {
         );
     }
 
-    _log(msg){
-        console.log('PublishArticle '+msg);
+    _log(msg) {
+        console.log('PublishArticle ' + msg);
     }
 }
 

@@ -5,21 +5,44 @@
 import React, {Component} from 'react';
 import ReactDom from 'react-dom';
 import UserInfoView from './UserInfoView'
-import DirectoryContentView from './ArticleContentView'
+import ArticleListView from './ArticleListView'
+import { Lifecycle } from 'react-router'
+import reactMixin from 'react-mixin'
 
 import {log} from '../DConsole'
 
 if (module.hot)
     module.hot.accept();
 
-const Tag = 'AppView';
+const Tag = 'HomeView';
 
-export default class AppView extends Component {
+
+class HomeView extends Component {
     // 构造
     constructor(props) {
         super(props);
         // 初始状态
         this.state = {};
+
+        // this.props.router.setRouteLeaveHook(
+        //     this.props.route,
+        //     this.routerWillLeave
+        // )
+
+    }
+
+    routerWillLeave(nextLocation) {
+        console.log('HomeView routerWillLeave将');
+        return 'Your work is not saved! Are you sure you want to leave?'
+    }
+
+    componentWillUnmount() {
+        console.log('HomeView 卸载将');
+    }
+
+
+    componentDidUpdate() {
+        console.log('HomeView 更新完毕');
     }
 
     onclick() {
@@ -52,11 +75,16 @@ export default class AppView extends Component {
         return (
             <div style={styles.mainDiv}>
                 <UserInfoView/>
-                <DirectoryContentView />
+                <ArticleListView />
             </div>
         );
     };
 }
+
+
+export default reactMixin.onClass(HomeView, Lifecycle);
+
+
 
 const styles = {
     mainDiv: {

@@ -7,13 +7,14 @@ import  BaseComponent from './BaseComponent'
 import  React, {PropTypes} from 'react'
 import  {connect} from 'react-redux'
 import  {loadData} from '../reducers/data'
+import  {Link} from 'react-router'
 
 if (module.hot)
     module.hot.accept();
 
-const Tag = 'DirectoryContentView';
+const Tag = 'ArticleListView';
 
-class DirectoryContentView extends BaseComponent {
+class ArticleListView extends BaseComponent {
 
     static propTypes = {
         loadData: PropTypes.func,
@@ -54,7 +55,7 @@ class DirectoryContentView extends BaseComponent {
             titles.push(
                 // {/*<p key={index} style={styles.titleP}>{data['topic_intro']}</p>*/}
                 <div key={index} style={styles.titleM}>
-                    <p style={styles.titleP} onClick={()=>this.go2Detail(data)}>{data['title']}</p>
+                    <Link to={"/article/"+data['id']}><p style={styles.titleP} >{data['title']}</p></Link>
                 </div>
 
             );
@@ -111,4 +112,4 @@ const mapDispatchToProps = (dispatch, props)=> {
     }
 };
 
-module.exports = connect(mapstateToProps, mapDispatchToProps)(DirectoryContentView);
+module.exports = connect(mapstateToProps, mapDispatchToProps)(ArticleListView);
